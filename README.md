@@ -1,4 +1,4 @@
-# 4318-Macros
+# ECE 4318 - Excel Macros
 ## Project 1
 * 12 Macros:
   * Math Macros
