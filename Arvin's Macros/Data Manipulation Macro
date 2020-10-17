@@ -1,0 +1,48 @@
+Sub Clean_Data() 'asks user for input and removes the inputted data from selected range
+Dim cell As Range
+Dim pop_data As Variant 'pop_data is saved as variant to handle any data type, this is the data we want to 'pop'
+pop_data = InputBox("Enter data to be removed") 'take user data and save it as pop_data
+Selection.Value = Selection.Value
+For Each cell In Selection 'for all cells in the selection
+If cell = pop_data Then 'we find if the value in the selected cell is the same as value we want to pop
+With cell
+.Value = Null 'delete the value
+.NumberFormat = "General" 'the format of the number is the general format
+End With
+End If
+Next cell
+End Sub
+
+Sub Insert_to_Null() 'asks user for data to be inserted into blank spots
+Dim cell As Range
+Dim ins_data As Variant 'data to be inserted taken from user
+ins_data = InputBox("Enter data to be inserted into blanks") 'asks user for input
+Selection.Value = Selection.Value
+
+For Each cell In Selection 'for each cell in selected cells
+If IsEmpty(cell) Then 'checks if selected cell is empty
+With cell
+.Value = ins_data 'replaces the empty cell with user input value
+.NumberFormat = "General" 'the format of the number is the general format
+End With
+End If
+Next cell
+End Sub
+
+Sub Highlight() 'asks user for data to be highlighted and allows user to select highlight color
+Dim cell As Range
+Dim hl_data As Variant 'the data that is to be highlighted taken from user
+Dim hl_num As Integer 'the color of highlight taken from user
+hl_data = InputBox("Enter data to be highlighted") 'ask user for data to be highlighted
+hl_num = InputBox("Enter highlight color: 1=black, 2=white, 3=red, 4=green, 5=blue") 'ask user for highlight color
+Selection.Value = Selection.Value
+
+For Each cell In Selection
+If cell = hl_data Then 'if selected cell is same as what user specified
+With cell
+.Interior.ColorIndex = hl_num 'highlight the cell with user selected highlight color
+.NumberFormat = "General" 'the format of the number is the general format
+End With
+End If
+Next cell
+End Sub
