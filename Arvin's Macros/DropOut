@@ -1,0 +1,62 @@
+  
+Sub DropOut() 'asks user for input and removes the inputted data from selected range
+Dim cell As Range
+Dim drop_type As Integer
+Dim drop_val As Integer
+drop_val = InputBox("Enter value to drop")
+drop_type = InputBox("Drop data that is: '=', '<', or '>'")
+Selection.Value = Selection.Value
+
+If drop_type = "=" Then
+    For Each cell In Selection 'for all cells in the selection
+    If cell = drop_val Then 'we find if the value in the selected cell is the same as value we want to pop
+    With cell
+    .Value = Null 'delete the value
+    .NumberFormat = "General" 'the format of the number is the general format
+    End With
+    End If
+    Next cell
+End If
+
+If drop_type = "<" Then
+    For Each cell In Selection 'for all cells in the selection
+    If cell < drop_val Then 'we find if the value in the selected cell is the same as value we want to pop
+    With cell
+    .Value = Null 'delete the value
+    .NumberFormat = "General" 'the format of the number is the general format
+    End With
+    End If
+    Next cell
+End If
+
+If drop_type = ">" Then
+    For Each cell In Selection 'for all cells in the selection
+    If cell > drop_val Then 'we find if the value in the selected cell is the same as value we want to pop
+    With cell
+    .Value = Null 'delete the value
+    .NumberFormat = "General" 'the format of the number is the general format
+    End With
+    End If
+    Next cell
+End If
+
+Dim rep_val As Integer
+Dim ask_rep As String
+ask_rep = InputBox("Would you like to replace dropped values? 'Y' or 'N'")
+
+If ask_rep = N Then
+End If
+    
+If ask_rep = Y Then
+    rep_val = InputBox("Enter replacement value: ")
+    For Each cell In Selection 'for all cells in the selection
+    If IsEmpty(cell) Then 'we find if the value in the selected cell is the same as value we want to pop
+    With cell
+    .Value = rep_val 'delete the value
+    .NumberFormat = "General" 'the format of the number is the general format
+    End With
+    End If
+    Next cell
+End If
+
+End Sub
