@@ -1,9 +1,9 @@
   
 Sub DropOut() 'asks user for input and removes the inputted data from selected range
 Dim cell As Range
-Dim drop_type As Integer
+Dim drop_type As String
 Dim drop_val As Integer
-drop_val = InputBox("Enter value to drop")
+drop_val = InputBox("Enter value: ")
 drop_type = InputBox("Drop data that is: '=', '<', or '>'")
 Selection.Value = Selection.Value
 
@@ -42,12 +42,15 @@ End If
 
 Dim rep_val As Integer
 Dim ask_rep As String
+Dim rep_type As String
+Dim min_rep_val As Integer
+Dim max_rep_val As Integer
 ask_rep = InputBox("Would you like to replace dropped values? 'Y' or 'N'")
 
-If ask_rep = N Then
-End If
+If ask_rep = "Y" Or ask_rep = "y" Then
+    rep_type = InputBox("Should the replaced value be Static or Range? 'S' or 'R'")
     
-If ask_rep = Y Then
+If rep_type = "S" Or rep_type = "s" Then
     rep_val = InputBox("Enter replacement value: ")
     For Each cell In Selection 'for all cells in the selection
     If IsEmpty(cell) Then 'we find if the value in the selected cell is the same as value we want to pop
@@ -55,6 +58,16 @@ If ask_rep = Y Then
     .Value = rep_val 'delete the value
     .NumberFormat = "General" 'the format of the number is the general format
     End With
+    End If
+    Next cell
+End If
+
+If rep_type = "R" Or rep_type = "r" Then
+    min_rep_val = InputBox("Enter min of range")
+    max_rep_val = InputBox("Enter max of range")
+    For Each cell In Selecion
+    If IsEmpty(cell) Then
+    cell = WorksheetFunction.RandBetween(min_rep_val, max_rep_val)
     End If
     Next cell
 End If
