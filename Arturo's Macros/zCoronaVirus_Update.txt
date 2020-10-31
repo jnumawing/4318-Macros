@@ -1,0 +1,71 @@
+Sub opening_zoom()
+'Declare the instance of the object to open internet explore
+Dim zoom As Object
+Dim cell_position As Integer
+cell_position = 1
+' crate the object to open microsoft internet
+Set zoom = CreateObject("InternetExplorer.Application")
+
+' go to the zoom report url to export he names of the partcipants on to excel
+With zoom
+    .navigate "https://www.worldometers.info/coronavirus/"
+' make the opening of this page visible to the user
+    .Visible = True
+    
+' the opening will take some time therfore we got to wait
+End With
+
+    Do While zoom.Busy
+    DoEvents
+    Loop
+   
+
+
+' now we look into the HTML to find the name of the class that contains the tr we want to import to excel
+ For Each htmlEle In zoom.document.getElementsByClassName("table table-bordered table-hover main_table_countries dataTable no-footer")(0).getElementsByTagName("tr")
+ '  we then activate the sheet and wil place the colomn on cell A and the contect we want its on the 3nd position on the table
+        With ActiveSheet
+            .Range("A" & cell_position).Value = htmlEle.Children(1).textContent
+            .Range("B" & cell_position).Value = htmlEle.Children(2).textContent
+            .Range("C" & cell_position).Value = htmlEle.Children(3).textContent
+            .Range("D" & cell_position).Value = htmlEle.Children(4).textContent
+            .Range("E" & cell_position).Value = htmlEle.Children(5).textContent
+            .Range("F" & cell_position).Value = htmlEle.Children(6).textContent
+            .Range("G" & cell_position).Value = htmlEle.Children(7).textContent
+            .Range("H" & cell_position).Value = htmlEle.Children(8).textContent
+            .Range("I" & cell_position).Value = htmlEle.Children(9).textContent
+            .Range("J" & cell_position).Value = htmlEle.Children(10).textContent
+            .Range("K" & cell_position).Value = htmlEle.Children(11).textContent
+            .Range("L" & cell_position).Value = htmlEle.Children(12).textContent
+            .Range("M" & cell_position).Value = htmlEle.Children(13).textContent
+           
+        End With
+ ' if we want more elements of the table we keep looping to next
+        cell_position = cell_position + 1
+    Next htmlEle
+    
+    'deleting unwanting data fromt he website
+    Range("3:3,4:4,5:5").Select
+    Range("A5").Activate
+    Selection.Delete Shift:=xlUp
+    
+    'editing table fromatting
+     Application.CutCopyMode = False
+    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$A$1:$M$229"), , xlYes).Name = _
+        "Table3"
+    Range("Table3[#All]").Select
+    ActiveSheet.ListObjects("Table3").TableStyle = "TableStyleLight13"
+     
+    ' delting worng totoals form the table
+    Range("A222:M228").Select
+    Selection.ListObject.ListRows(221).Delete
+    Selection.ListObject.ListRows(221).Delete
+    Selection.ListObject.ListRows(221).Delete
+    Selection.ListObject.ListRows(221).Delete
+    Selection.ListObject.ListRows(221).Delete
+    Selection.ListObject.ListRows(221).Delete
+    Selection.ListObject.ListRows(221).Delete
+    
+    'refreshAll
+     ActiveWorkbook.RefreshAll
+End Sub

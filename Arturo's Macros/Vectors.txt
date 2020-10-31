@@ -1,0 +1,147 @@
+Sub Vec_1()
+
+'Declare variables
+Dim x1, y1, x2, y2 As Double
+Dim x1_2, y1_2, x2_2, y2_2 As Double
+
+Dim mag1, mag2 As Double
+Dim ang1, ang2 As Double
+
+' declare ranges to select data
+Dim cell_1, cell_2, cell_3, cell_4 As Range
+Dim cell_5, cell_6, cell_7, cell_8 As Range
+
+Dim ans As Range
+
+'Declare Pi
+Dim Pi As Double
+
+'Declare pi as constant
+
+ Pi = WorksheetFunction.Pi()
+
+MsgBox "Select the coordinates points for the 1st Vector"
+Set cell_1 = Application.InputBox("select point X1", Type:=8)
+Set cell_2 = Application.InputBox("select point Y1", Type:=8)
+Set cell_3 = Application.InputBox("select point X2", Type:=8)
+Set cell_4 = Application.InputBox("select point Y2", Type:=8)
+'Get the vector points
+
+x1 = cell_1.Value
+y1 = cell_2.Value
+x2 = cell_3.Value
+y2 = cell_4.Value
+
+' finding the magintiude and angle of the points that conform the 1st vector
+mag1 = Round(Sqr((x2 - x1) ^ 2 + (y2 - y1) ^ 2), 1)
+ang1 = Round(((Atn((y2 - y1) / (x2 - x1))) * 180 / Pi), 2)
+
+Cells(5, 2) = mag1
+Cells(6, 2) = ang1
+
+
+'  finding the second poin
+
+MsgBox "Select the coordinates points for the 2nd Vector"
+Set cell_5 = Application.InputBox("select point X1", Type:=8)
+Set cell_6 = Application.InputBox("select point Y1", Type:=8)
+Set cell_7 = Application.InputBox("select point X2", Type:=8)
+Set cell_8 = Application.InputBox("select point Y2", Type:=8)
+'Get the vector points
+
+x1_2 = cell_5.Value
+y1_2 = cell_6.Value
+x2_2 = cell_7.Value
+y2_2 = cell_8.Value
+
+' calling the vector sub
+Call vec_two_points((x1), (y1), (x2), (y2), (x1_2), (y1_2), (x2_2), (y2_2))
+
+
+' finding the magintiude and angle of the points that conform the 2st vector
+
+mag2 = Round(Sqr((x2_2 - x1_2) ^ 2 + (y2_2 - y1_2) ^ 2), 1)
+ang2 = Round(((Atn((y2_2 - y1_2) / (x2_2 - x1_2))) * 180 / Pi), 2)
+
+Cells(5, 6) = mag2
+Cells(6, 6) = ang2
+
+' calling the sub that finds the rusltant becotr of the two vectors
+Call resultant_vec((mag1), (mag2), (ang1), (ang2), (Pi))
+
+'End
+
+End Sub
+
+Sub resultant_vec(mag1 As Double, mag2 As Double, ang1 As Double, ang2 As Double, Pi As Double)
+
+'  declare the varibales for this calculation
+Dim Rvec_X, Rvec_Y As Double
+Dim Rvec_mag, Rvec_ang As Double
+Dim deg As Double
+
+'define the degree / radians conversion
+rad = Pi / 180
+deg = 180 / Pi
+
+' find the coordinates of the resultant vector
+Rvec_X = Round(mag1 * Cos(ang1 * rad) + mag2 * Cos(ang2 * rad), 2)
+Rvec_Y = Round(mag1 * Sin(ang1 * rad) + mag2 * Sin(ang2 * rad), 2)
+
+Cells(10, 2).Value = Rvec_X
+Cells(11, 2).Value = Rvec_Y
+
+' find the resulatant magnitude
+Rvec_mag = Round(Sqr((Rvec_X) ^ 2 + (Rvec_Y) ^ 2), 2)
+
+Cells(12, 2).Value = Rvec_mag
+
+' cancle the negative values by just making the vlaue postive
+If Rvec_X < 0 Then
+    Rvec_X = -1 * Rvec_X
+End If
+
+' finding angle of the resultant vector
+Rvec_ang = Round((Atn((Rvec_Y) / (Rvec_X)) * deg), 2)
+
+Cells(13, 2).Value = Rvec_ang
+
+End Sub
+
+Sub vec_two_points(x1 As Double, y1 As Double, x2 As Double, y2 As Double, x1_2 As Double, y1_2 As Double, x2_2 As Double, y2_2 As Double)
+
+' find vector bewteen points
+Dim v1, v2, v3, v4 As Double
+Dim dot_p As Double
+
+'find vector 1
+v1 = (x2 - x1)
+v2 = (y2 - y1)
+Cells(7, 2).Value = v1
+Cells(7, 3).Value = v2
+
+'find vector 2
+v3 = (x2_2 - x1_2)
+v4 = (y2_2 - y1_2)
+Cells(7, 6).Value = v3
+Cells(7, 7).Value = v4
+
+'  finding the dot product
+dot_p = (v1 * v3) + (v2 * v4)
+Cells(10, 6).Value = dot_p
+
+'find Addtion of the vector
+Cells(12, 6).Value = (v1 + v3)
+Cells(12, 7).Value = (v2 + v4)
+
+'find subtraction of the vector
+Cells(13, 6).Value = (v1 - (v3))
+Cells(13, 7).Value = (v2 - (v4))
+
+
+
+End Sub
+
+
+
+
