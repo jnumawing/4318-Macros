@@ -1,0 +1,90 @@
+Sub Highlight_Data_Parameters()
+
+Dim cell As Range
+Dim param As String
+Dim total As Integer
+Dim mean As Integer
+Dim std As Single
+Dim i As Integer
+Dim nrow As Integer
+Dim ncol As Integer
+Dim j As Integer
+
+Selection.Value = Selection.Value
+Set cell = Selection
+
+param = InputBox("Pick parameter: 'Mean' or 'Std'?")
+                                                'ask user for mean or standard deviation
+total = 0
+nrow = cell.Rows.Count                          'store the number of rows selected
+ncol = cell.Columns.Count                       'store the number of columns selected
+
+For i = 1 To nrow
+    For j = 1 To ncol
+        total = total + cell(i, j)              'iterate through all selected cells and add to total
+    Next j
+Next i
+mean = total / (nrow * ncol)                    'mean is total of all cells divided by number of cells selected
+
+Dim Sqrt_Sum As Single
+Sqrt_Sum = 0
+For i = 1 To nrow
+    For j = 1 To ncol                           'sqrt_sum stores the cumulative value of all values selected subtraced by mean squared
+        Sqrt_Sum = Sqrt_Sum + (cell(i, j) - mean) ^ 2
+    Next j
+Next i
+std = Sqr(Sqrt_Sum / (nrow * ncol))             'standard deviation is square root of sqrt_sum divided by number of cells selected
+
+Dim mean_type As String
+Dim mean_col As Integer
+If param = "Mean" Or param = "mean" Then
+mean_type = InputBox("What should be highlighted? '=', '>', '<' the mean?")
+                                                'ask user for less, greater, or equal to mean
+mean_col = InputBox("Enter highlight color: 3=red, 4=green, 5=blue, 6=yellow, 7=purple")
+    For Each cell In Selection                  'ask user for highlight color
+    If mean_type = "=" Then
+        If cell = mean Then                     'if selected cell is same as what user specified
+        With cell
+        .Interior.ColorIndex = mean_col         'highlight the cell in color that was specified
+        .NumberFormat = "General"               'the format of the number is the general format
+        End With
+        End If
+    End If
+    
+   If mean_type = "<" Then
+        If cell < mean Then                     'if selected cell is less than what user specified
+        With cell
+        .Interior.ColorIndex = mean_col         'highlight the cell in color that was specified
+        .NumberFormat = "General"               'the format of the number is the general format
+        End With
+        End If
+    End If
+    
+    If mean_type = ">" Then                     'if user specified greater than
+        If cell > mean Then                     'if selected cell is greater than what user specified
+        With cell
+        .Interior.ColorIndex = mean_col         'highlight the cell in color that was specified
+        .NumberFormat = "General"               'the format of the number is the general format
+        End With
+        End If
+    End If
+    Next cell
+End If
+
+Dim stds As Integer
+Dim std_col As Integer
+If param = "Std" Or param = "std" Then
+stds = InputBox("Number of stds from mean: 1, 2, or 3?")
+std_col = InputBox("Enter highlight color: 3=red, 4=green, 5=blue, 6=yellow, 7=purple")
+                                                'ask user for highlight color
+    For Each cell In Selection
+        If cell < (mean + (std * stds)) And cell > (mean - (std * stds)) Then
+        With cell                               'if cell is within the specified standard deviation
+        .Interior.ColorIndex = std_col          'highlight the cell in color that was specified
+        .NumberFormat = "General"               'the format of the number is the general format
+        End With
+        End If
+    Next cell
+End If
+        
+End Sub
