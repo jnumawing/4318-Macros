@@ -1,79 +1,60 @@
-  
-Sub DropOut()                               'Can drop all values in a range equal, less, or greater than input value. Can then replace with static or range of values
-Dim cell As Range
-Dim drop_type As String
-Dim drop_val As Integer
-drop_val = InputBox("Enter value: ")        'asks user for value to work with
-drop_type = InputBox("Drop data that is: '=', '<', or '>'")
-                                            'asks to drop values equal, less, or greater than value
+Sub Current_Date() 'Selected cells will display the current date	
+Dim cell As Range 'Set cell as Range datatype
+
+Selection.Value = Selection.Value	Selection.Value = Selection.Value
+For Each cell In Selection 'for all cells selected	
+cell = Date 'make the cell current date	
+Next cell	
+End Sub
+
+Sub Gen_Rand_Dates() 'Generated random dates from 1/1/1900 to todays date (useful for generating lots of data quickly
+Dim start As Date 'set start and enddate as Date datatype
+Dim enddate As Date
+start = "1/1/1900" 'starting date is 1/1/1900
+enddate = Date 'end date is current date
+Dim cell As Range '
 Selection.Value = Selection.Value
+For Each cell In Selection 'for each cell selected, display random date between start and end dates
+cell = WorksheetFunction.RandBetween(start, enddate)
+cell = Format(cell, "m/d/yyyy") 'format the generated dates
+Next cell
+End Sub
 
-If drop_type = "=" Then                     'if user wants to drop values equal to input value
-    For Each cell In Selection              'for all cells in the selection
-    If cell = drop_val Then                 'we find if the value in the selected cell is the same as value we want to drop
-    With cell
-    .Value = Null                           'delete the value
-    .NumberFormat = "General"               'the format of the number is the general format
-    End With
-    End If
-    Next cell
+Sub To_Day() 'detects if a cell contains a date and replaces it with just the day
+Dim dates As Range
+Selection.Value = Selection.Value
+For Each dates In Selection 'for each date that is selected
+If IsDate(dates) = True Then 'if the cell contains a date
+With dates
+.Value = Day(dates) 'set the value to the day of the date
+.NumberFormat = "General" 'the format of the date is the general format
+End With
 End If
+Next dates
+End Sub
 
-If drop_type = "<" Then                     'if user wants to drop values less than input value
-    For Each cell In Selection              'for all cells in the selection
-    If cell < drop_val Then                 'we find if the value in the selected cell is less than the value we want to drop
-    With cell
-    .Value = Null                           'delete the value
-    .NumberFormat = "General"               'the format of the number is the general format
-    End With
-    End If
-    Next cell
+Sub To_Month() 'detects if a cell contains a date and replaces it with just the month
+Dim dates As Range
+Selection.Value = Selection.Value
+For Each dates In Selection 'for each date that is selected
+If IsDate(dates) = True Then 'if the cell contains a date
+With dates
+.Value = Month(dates) 'set the value to the month of the date
+.NumberFormat = "General" 'the format of the date is the general format
+End With
 End If
+Next dates
+End Sub
 
-If drop_type = ">" Then                     'if user wants to drop values greater than input value
-    For Each cell In Selection              'for all cells in the selection
-    If cell > drop_val Then                 'we find if the value in the selected cell is greater than value we want to drop
-    With cell
-    .Value = Null                           'delete the value
-    .NumberFormat = "General"               'the format of the number is the general format
-    End With
-    End If
-    Next cell
+Sub To_Year() 'detects if a cell contains a date and replaces it with just the year
+Dim dates As Range
+Selection.Value = Selection.Value
+For Each dates In Selection 'for each date that is selected
+If IsDate(dates) = True Then 'if the cell contains a date
+With dates
+.Value = Year(dates) 'set the value to the year of the date
+.NumberFormat = "General" 'the format of the date is the general format
+End With
 End If
-
-Dim rep_val As Integer
-Dim ask_rep As String
-Dim rep_type As String
-Dim min_rep_val As Integer
-Dim max_rep_val As Integer
-ask_rep = InputBox("Would you like to replace dropped values? 'Y' or 'N'")
-                                            'ask if dropped values should be replaced
-
-If ask_rep = "Y" Or ask_rep = "y" Then
-    rep_type = InputBox("Should the replaced value be Static or a Range? 'S' or 'R'")
-End If
-                                            'if user wants to replace, now ask if it should be static or a range of values
-If rep_type = "S" Or rep_type = "s" Then    'if user wants to replace with a static value
-    rep_val = InputBox("Enter replacement value: ")
-    For Each cell In Selection              'for all cells in the selection
-    If IsEmpty(cell) Then                   'we find if the value in the selected cell is empty
-    With cell
-    .Value = rep_val                        'we replace the empty values with a static replacement value
-    .NumberFormat = "General"               'the format of the number is the general format
-    End With
-    End If
-    Next cell
-End If
-
-If rep_type = "R" Or rep_type = "r" Then    'if user wants to replace with a range of values
-    min_rep_val = InputBox("Enter min of range")
-    max_rep_val = InputBox("Enter max of range")
-    For Each cell In Selection
-    If IsEmpty(cell) Then
-    cell = WorksheetFunction.RandBetween(min_rep_val, max_rep_val)
-                                            'replace with random values taken from user
-    End If
-    Next cell
-End If
-
+Next dates
 End Sub
