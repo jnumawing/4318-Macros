@@ -1,0 +1,118 @@
+Sub Hi_light()
+' declarations
+Dim user_input As String
+Dim original_range As Range
+
+'i declaration for the FOR loop
+Dim i As Integer
+
+Dim desire_value As String
+Dim input_temp As Range
+
+'assigning the last and first cell in the worksheet
+Dim find_user_input As Range
+Dim ending_cell As Range
+
+Dim col_postion As Integer
+
+'if the user input is not found in the used rnage
+  user_input = InputBox("Please enter the vlaue to highlight in the worksheet: ")
+  
+'if nothing is enter then just exit the input window
+If user_input = "" Then Exit Sub
+
+'the rnage to search are the cells used that contian a value in the active worksheet
+Set original_range = ActiveSheet.UsedRange
+
+'setting the last ending cell same the roginal_rnage that was set before
+Set ending_cell = original_range.Cells(original_range.Cells.Count)
+
+'will set the user input to the cell we found after seraching until the last cell on the workseet
+Set find_user_input = original_range.Find(what:=user_input, after:=ending_cell)
+
+' Calling the not Found function to display the messsage
+'Test to see if anything was found
+  If Not find_user_input Is Nothing Then
+    desire_value = find_user_input.Address
+  Else
+     MsgBox "There are not cells that contains the item: " & user_input
+     Exit Sub
+  End If
+
+Set input_temp = find_user_input
+
+'loop thorught all the cells unitl the value wanted is found
+  Do Until find_user_input Is Nothing
+  
+    'find orginal input and set it the variable find_use rinput
+      Set find_user_input = original_range.FindNext(after:=find_user_input)
+      
+    'set the found cell to the temp cell
+      Set input_temp = Union(input_temp, find_user_input)
+    
+    'if the value was found then exit the Do loop
+      If find_user_input.Address = desire_value Then Exit Do
+      
+      
+  Loop
+
+'Highlight Green cells
+  input_temp.Interior.Color = RGB(100, 255, 100)
+  
+  'send a message of the number of found items in the active used cells
+  MsgBox input_temp.Cells.Count & " cells were forund in the active worksheet with the item: " & user_input
+
+  
+ ' displaying the where items  are located
+   MsgBox ("The item(s) were found in cell(s) " & input_temp.Address())
+   
+   
+ 
+   'giving the use the option to make duplicates unique, they need to be close together :(
+   If input_temp.Cells.Count >= 2 Then
+   '  ask user if he wants to rename close toghther duplicates
+    answer = MsgBox("There are duplicates close together, do you wanna rename them, by adding a number after the ?", vbQuestion + vbYesNo)
+    
+    ' ask the user for the colubm postion by observing the adresss window
+   col_postion = InputBox("Please enter the column, after viewing where the duplicates are located, Enter 1 for column A etc. : ")
+      If col_postion > 1 Then
+        col_postion = col_postion - 1
+        Else
+        col_postion = col_postion
+        End If
+        
+      If answer = vbYes Then
+      ' loop thoguht the cells
+        For i = 1 To input_temp.Cells.Count
+          With Range(input_temp.Address())
+           .Cells(i, col_postion).Value = user_input & i
+           .Font.Bold = False
+         End With
+        Next i
+      Else
+     'do nothing
+     End If
+     'do nothing
+    Else
+    
+  End If
+  
+  ' call the clear format method
+  Call clear
+  
+Exit Sub
+
+End Sub
+
+Sub clear()
+' ask the user if he wants to clear the highlight items
+answer = MsgBox("Do you want to clear the highlight items?", vbQuestion + vbYesNo)
+' if yes then clear contents
+If answer = vbYes Then
+ Cells.Interior.ColorIndex = xlNone
+Else
+'do nothing
+  End If
+End Sub
+
+

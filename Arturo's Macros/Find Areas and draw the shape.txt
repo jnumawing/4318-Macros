@@ -1,0 +1,193 @@
+Option Explicit
+Sub Area()
+
+
+Dim UserInput As Integer
+Dim answer As Integer
+UserInput = InputBox(Prompt:="Choose a number between 1 and 5" & vbNewLine & "1 = Circle" & vbNewLine & "2 = Rectangule/Square" & vbNewLine & "3 = Trapeziod" & vbNewLine & "4 = Triangle" & vbNewLine & "5 = Pentagon")
+
+
+Select Case UserInput
+Case 1
+MsgBox "Circle"
+Call find_circle
+    
+Case 2
+MsgBox "Rectangule/Square"
+Call find_rect
+
+Case 3
+MsgBox "Trapeziod"
+Call find_trap
+
+Case 4
+MsgBox "Triangle"
+Call find_tran
+
+Case 5
+MsgBox "Pentagon"
+Call n_tagon
+
+End Select
+
+
+End Sub
+
+Sub find_circle()
+' find the area of a circle
+    Dim answer As Double
+    Dim radius As Double
+   
+
+    ' pi will be a constant
+    Dim p As Double
+    p = WorksheetFunction.Pi()
+    
+
+    ' asking the user for the radius
+    radius = InputBox("Enter the radius")
+      
+    ' Calculate area
+    answer = p * radius ^ 2
+  
+    ' show the user
+    MsgBox ("The Area = " & answer)
+    
+    '  draw the shape and display the areas
+     With ActiveSheet.Shapes.AddShape(msoShapeOval, 100, 100, radius * 2, radius * 2)
+        .Name = "ciricle"
+        .Fill.ForeColor.RGB = vbGreen
+        .Line.Transparency = 0.8
+        .Placement = 1
+        .TextFrame.Characters.Text = "Area = " & answer
+        .TextFrame.Characters.Font.Color = 1
+        .TextFrame.HorizontalAlignment = xlHAlignCenter
+        .TextFrame.VerticalAlignment = xlVAlignCenter
+        
+    End With
+End Sub
+
+Sub find_rect()
+'find the area of a rectangule
+    Dim answer As Double
+    Dim wi As Double
+    Dim le As Double
+   
+ ' asking the user for the radius
+    wi = InputBox("Enter the withd")
+    
+    le = InputBox("Enter the lenght")
+    
+    answer = wi * le
+    
+    ' show the user
+    MsgBox ("The Area = " & answer)
+    
+    '  draw the shape and display the areas
+     With ActiveSheet.Shapes.AddShape(msoShapeRectangle, 100, 100, wi, le)
+        .Name = "ciricle"
+        .Fill.ForeColor.RGB = vbYellow
+        .Line.Transparency = 0.5
+        .Placement = 1
+        .TextFrame.Characters.Text = "Area = " & answer
+        .TextFrame.Characters.Font.Color = 1
+        .TextFrame.HorizontalAlignment = xlHAlignCenter
+        .TextFrame.VerticalAlignment = xlVAlignCenter
+        
+  End With
+End Sub
+
+Sub find_trap()
+'find the area of a trapezoid
+    Dim answer As Double
+    Dim a_base As Double
+    Dim b_base As Double
+    Dim height As Double
+    
+   
+ ' asking the user for the radius
+   a_base = InputBox("Enter the short base ")
+    
+    b_base = InputBox("Enter the long base ")
+    
+    height = InputBox("Enter the height")
+    
+    answer = ((a_base + b_base) / 2) * height
+    
+    ' show the user
+    MsgBox ("The Area = " & answer)
+    
+    '  draw the shape and display the areas
+     With ActiveSheet.Shapes.AddShape(msoShapeTrapezoid, 50, a_base, b_base, height)
+        .Name = "ciricle"
+        .Fill.ForeColor.RGB = vbRed
+        .Line.Transparency = 0.5
+        .Placement = 1
+        .TextFrame.Characters.Text = "Area = " & answer
+        .TextFrame.Characters.Font.Color = 1
+        .TextFrame.HorizontalAlignment = xlHAlignCenter
+        .TextFrame.VerticalAlignment = xlVAlignCenter
+  End With
+        
+ End Sub
+ 
+ Sub find_tran()
+'find the area of a triangle
+    Dim answer As Double
+    Dim base As Double
+    Dim height As Double
+    
+   
+ ' asking the user for the the shape mesurments
+   base = InputBox("Enter the base ")
+    
+   height = InputBox("Enter the height")
+    
+    answer = 0.5 * base * height
+    
+    ' show the user
+    MsgBox ("The Area = " & answer)
+    
+    '  draw the shape and display the areas
+     With ActiveSheet.Shapes.AddShape(msoShapeIsoscelesTriangle, 50, 60, base, height)
+        .Name = "ciricle"
+        .Fill.ForeColor.RGB = vbRed
+        .Line.Transparency = 0.5
+        .Placement = 1
+        .TextFrame.Characters.Text = "Area = " & answer
+        .TextFrame.Characters.Font.Color = 1
+        .TextFrame.HorizontalAlignment = xlHAlignCenter
+        .TextFrame.VerticalAlignment = xlVAlignCenter
+  End With
+        
+ End Sub
+ 
+ Sub n_tagon()
+'find the area of a triangle
+    Dim answer As Double
+    Dim side As Double
+ 
+ ' asking the user for the the shape mesurments
+   side = InputBox("Enter the side lenght ")
+   
+    answer = 0.25 * Sqr(5 * (5 + 2 * Sqr(5) * side ^ (2)))
+    
+    ' show the user
+    MsgBox ("The Area = " & answer)
+    
+    '  draw the shape and display the areas
+     With ActiveSheet.Shapes.AddShape(msoShapeRegularPentagon, 50, 50, side, side)
+        .Name = "ciricle"
+        .Fill.ForeColor.RGB = vbGreen
+        .Line.Transparency = 0.5
+        .Placement = 1
+        .TextFrame.Characters.Text = "Area = " & answer
+        .TextFrame.Characters.Font.Color = 1
+        .TextFrame.HorizontalAlignment = xlHAlignCenter
+        .TextFrame.VerticalAlignment = xlVAlignCenter
+  End With
+  
+
+        
+ End Sub
+ 
